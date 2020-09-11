@@ -1,10 +1,10 @@
-package com.lishunyi.ournote.gateway;
+package com.lishunyi.ournote.member;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OurnoteGatewayApplicationTests {
+class OurnoteMemberApplicationTests {
 
     @Test
     void contextLoads() {

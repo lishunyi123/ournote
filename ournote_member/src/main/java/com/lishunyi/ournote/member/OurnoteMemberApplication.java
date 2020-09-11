@@ -1,13 +1,13 @@
-package com.lishunyi.ournote.gateway;
+package com.lishunyi.ournote.member;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OurnoteGatewayApplication {
+public class OurnoteMemberApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OurnoteGatewayApplication.class, args);
+        SpringApplication.run(OurnoteMemberApplication.class, args);
     }
 
 }
