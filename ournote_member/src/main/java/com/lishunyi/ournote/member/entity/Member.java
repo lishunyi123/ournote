@@ -1,6 +1,8 @@
 package com.lishunyi.ournote.member.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -12,6 +14,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "t_member")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -27,4 +31,19 @@ public class Member {
 
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @Column(name = "phone")
+    private String phone;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "account_non_expired")
+    private Boolean accountNonExpired;
+
+    @Column(name = "account_non_locked")
+    private Boolean accountNonLocked;
+
+    @Column(name = "credentials_non_expired")
+    private Boolean credentialsNonExpired;
 }
