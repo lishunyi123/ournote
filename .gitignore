@@ -9,6 +9,7 @@
 *.iml
 # Maven
 *.mvn
+*/target
 
 # BlueJ files
 *.ctxt
