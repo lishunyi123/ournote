@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberDetailsService implements UserDetailsService {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Autowired
     public MemberDetailsService(MemberRepository memberRepository) {
