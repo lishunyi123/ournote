@@ -1,7 +1,6 @@
 package com.lishunyi.ournote.member.vo;
 
 import com.lishunyi.ournote.member.entity.Member;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

@@ -1,19 +1,20 @@
 package com.lishunyi.util;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.server.HttpServerRequest;
 import com.lishunyi.config.JwtConfig;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.lishunyi.ournote.member.vo.MemberDetails;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,7 +52,81 @@ public class JwtUtil {
     }
 
     public String createJWT(Authentication authentication, Boolean rememberMe) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return createJWT(rememberMe, userDetails.getUsername())
+        MemberDetails principal = (MemberDetails) authentication.getPrincipal();
+        return createJWT(rememberMe, principal.getId(), principal.getUsername(), null, principal.getAuthorities());
+    }
+
+    public Claims parseJWT(String jwt) {
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(jwtConfig.getKey())
+                    .parseClaimsJws(jwt).getBody();
+
+            String username = claims.getSubject();
+            String redisKey = "jwt:" + username;
+
+            Long expire = stringRedisTemplate.getExpire(redisKey, TimeUnit.MILLISECONDS);
+            if (Objects.isNull(expire) || expire <= 0) {
+                // 抛异常
+                throw new NullPointerException("token不存在");
+            }
+
+            // 如果jwt与redis中的不想等，均表示已过期
+            String redisToken = stringRedisTemplate.opsForValue().get(redisKey);
+            if (!StrUtil.equals(jwt, redisToken)) {
+                throw new NullPointerException("token已过期");
+            }
+            return claims;
+        } catch (ExpiredJwtException e) {
+            throw new NullPointerException("token已过期");
+        } catch (UnsupportedJwtException e) {
+            throw new NullPointerException("不支持的token");
+        } catch (MalformedJwtException e) {
+            throw new NullPointerException("token无效");
+        } catch (SignatureException e) {
+            throw new NullPointerException("无效的签名");
+        } catch (IllegalArgumentException e) {
+            throw new NullPointerException("token不存在");
+        }
+    }
+
+    public void invalidateJWT(HttpServerRequest request) {
+        String jwt = getJWTFromRequest(request);
+        String username = getUsernameFromJWT(jwt);
+        stringRedisTemplate.delete("jwt:" + username);
+    }
+
+    /**
+     * 从cookie、请求头、参数中获取JWT
+     *
+     * @param request 请求
+     * @return JWT
+     */
+    public String getJWTFromRequest(HttpServerRequest request) {
+        String authorization = null;
+        try {
+            // 先从cookie获取
+            authorization = request.getCookie("Authorization").getValue();
+            // 没有就从头部获取
+            if (StrUtil.isEmpty(authorization)) {
+                authorization = request.getHeader("Authorization");
+                if (StrUtil.isEmpty(authorization)) {
+                    // 没有就从参数获取
+                    authorization = request.getParams().get("Authorization").get(0);
+                }
+            }
+
+            if (StrUtil.isNotEmpty(authorization)) {
+                return authorization.substring(7);
+            }
+        } catch (Exception e) {
+            // 获取jwt失败
+        }
+        return null;
+    }
+
+    public String getUsernameFromJWT(String jwt) {
+        Claims claims = parseJWT(jwt);
+        return claims.getSubject();
     }
 }
