@@ -2,7 +2,6 @@ package com.lishunyi.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.http.server.HttpServerRequest;
 import com.lishunyi.config.JwtConfig;
 import com.lishunyi.ournote.member.vo.MemberDetails;
 import io.jsonwebtoken.*;
@@ -11,6 +10,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -90,7 +91,7 @@ public class JwtUtil {
         }
     }
 
-    public void invalidateJWT(HttpServerRequest request) {
+    public void invalidateJWT(HttpServletRequest request) {
         String jwt = getJWTFromRequest(request);
         String username = getUsernameFromJWT(jwt);
         stringRedisTemplate.delete("jwt:" + username);
@@ -102,17 +103,22 @@ public class JwtUtil {
      * @param request 请求
      * @return JWT
      */
-    public String getJWTFromRequest(HttpServerRequest request) {
+    public String getJWTFromRequest(HttpServletRequest request) {
         String authorization = null;
         try {
             // 先从cookie获取
-            authorization = request.getCookie("Authorization").getValue();
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (StrUtil.equals(cookie.getName(), "Authorization")) {
+                    authorization = cookie.getValue();
+                }
+            }
             // 没有就从头部获取
             if (StrUtil.isEmpty(authorization)) {
                 authorization = request.getHeader("Authorization");
                 if (StrUtil.isEmpty(authorization)) {
                     // 没有就从参数获取
-                    authorization = request.getParams().get("Authorization").get(0);
+                    authorization = request.getParameter("Authorization");
                 }
             }
 
