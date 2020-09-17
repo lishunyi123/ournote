@@ -1,9 +1,9 @@
-package com.lishunyi.util;
+package com.lishunyi.ournote.security.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
-import com.lishunyi.config.JwtConfig;
 import com.lishunyi.ournote.member.vo.MemberDetails;
+import com.lishunyi.ournote.security.config.JwtConfig;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

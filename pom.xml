@@ -10,7 +10,6 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <modules>
-        <module>ournote-security</module>
         <module>ournote_member</module>
         <module>ournote-common</module>
     </modules>

@@ -1,4 +1,4 @@
-package com.lishunyi.config;
+package com.lishunyi.ournote.security.config;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
