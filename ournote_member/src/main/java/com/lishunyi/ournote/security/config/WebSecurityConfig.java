@@ -1,5 +1,7 @@
 package com.lishunyi.ournote.security.config;
 
+import com.lishunyi.ournote.exception.SecurityAccessDeniedHandler;
+import com.lishunyi.ournote.exception.SecurityAuthenticationEntryPoint;
 import com.lishunyi.ournote.member.service.MemberDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,7 +18,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -34,7 +35,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private IgnoreConfig ignoreConfig;
 
     @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
+    private SecurityAccessDeniedHandler securityAccessDeniedHandler;
+
+    @Autowired
+    private SecurityAuthenticationEntryPoint securityAuthenticationEntryPoint;
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -48,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -71,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().disable()
                 // 自定义异常处理
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .exceptionHandling().accessDeniedHandler(securityAccessDeniedHandler).authenticationEntryPoint(securityAuthenticationEntryPoint);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
