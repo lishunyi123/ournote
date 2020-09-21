@@ -2,6 +2,7 @@ package com.lishunyi.ournote.security.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author 李顺仪
@@ -10,6 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  **/
 @ConfigurationProperties(prefix = "jwt.config")
 @Data
+@Component
 public class JwtConfig {
 
     private String key = "lishunyi";

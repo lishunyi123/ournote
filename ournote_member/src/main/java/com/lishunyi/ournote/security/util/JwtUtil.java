@@ -6,6 +6,7 @@ import com.lishunyi.ournote.member.vo.MemberDetails;
 import com.lishunyi.ournote.security.config.JwtConfig;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @version 1.0
  * @since 2020/9/14 14:11
  **/
+@Configuration
 public class JwtUtil {
 
     @Autowired

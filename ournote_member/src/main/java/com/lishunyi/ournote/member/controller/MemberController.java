@@ -29,6 +29,7 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(@RequestBody LoginVO loginVO) {
+        System.out.println(1);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginVO.getUsernameOrEmailOrPhone(), loginVO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtil.createJWT(authentication, loginVO.getRememberMe());
