@@ -79,7 +79,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 自定义异常处理
                 .exceptionHandling().accessDeniedHandler(securityAccessDeniedHandler).authenticationEntryPoint(securityAuthenticationEntryPoint);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.authorizeRequests().antMatchers("/auth/**").permitAll();
     }
 
     @Override

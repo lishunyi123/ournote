@@ -35,3 +35,8 @@ spring:
     name: ournote
 server:
   port: 8080
+
+ignore:
+  url:
+    post:
+      - /auth/login
