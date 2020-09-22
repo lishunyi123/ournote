@@ -23,6 +23,6 @@ public class MemberDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String usernameOrEmailOrPhone) throws UsernameNotFoundException {
         Member member = memberRepository.findByUsernameOrEmailOrPhone(usernameOrEmailOrPhone, usernameOrEmailOrPhone, usernameOrEmailOrPhone)
                 .orElseThrow(() -> new NullPointerException("用户信息未找到"));
-        return new MemberDetails(member);
+        return MemberDetails.create(member);
     }
 }

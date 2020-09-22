@@ -1,5 +1,7 @@
 package com.lishunyi.ournote.member.service;
 
-public interface IMemberService {
+import com.lishunyi.ournote.member.vo.RegisterVO;
 
+public interface IMemberService {
+    boolean register(RegisterVO registerVO);
 }

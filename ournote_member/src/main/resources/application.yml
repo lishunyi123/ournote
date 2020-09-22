@@ -40,3 +40,4 @@ ignore:
   url:
     post:
       - /auth/login
+      - /auth/register

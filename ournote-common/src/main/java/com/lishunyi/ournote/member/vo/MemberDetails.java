@@ -1,10 +1,10 @@
 package com.lishunyi.ournote.member.vo;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.lishunyi.ournote.member.entity.Member;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,7 +16,10 @@ import java.util.Collection;
 public class MemberDetails extends Member implements UserDetails {
 
     public MemberDetails(Member member) {
-        BeanUtils.copyProperties(member, new MemberDetails());
+    }
+
+    public static MemberDetails create(Member member) {
+        return BeanUtil.copyProperties(member, MemberDetails.class);
     }
 
     @Override
@@ -32,7 +35,7 @@ public class MemberDetails extends Member implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return super.getAccountNonLocked();
+        return getAccountNonLocked();
     }
 
     @Override

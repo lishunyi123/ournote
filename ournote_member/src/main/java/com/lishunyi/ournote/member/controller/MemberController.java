@@ -1,6 +1,8 @@
 package com.lishunyi.ournote.member.controller;
 
+import com.lishunyi.ournote.member.service.IMemberService;
 import com.lishunyi.ournote.member.vo.LoginVO;
+import com.lishunyi.ournote.member.vo.RegisterVO;
 import com.lishunyi.ournote.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,9 @@ public class MemberController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private IMemberService memberService;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
@@ -34,5 +39,10 @@ public class MemberController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtil.createJWT(authentication, loginVO.getRememberMe());
         return jwt;
+    }
+
+    @PostMapping("/register")
+    public Boolean register(@RequestBody RegisterVO registerVO) {
+        return memberService.register(registerVO);
     }
 }
