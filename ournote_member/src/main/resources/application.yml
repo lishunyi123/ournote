@@ -41,3 +41,9 @@ ignore:
     post:
       - /auth/login
       - /auth/register
+    get:
+      - /doc.html
+      - /webjars/**
+      - /swagger-resources/**
+      - /swagger-resources
+      - /v2/api-docs

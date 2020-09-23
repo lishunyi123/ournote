@@ -4,15 +4,14 @@ import com.lishunyi.ournote.member.service.IMemberService;
 import com.lishunyi.ournote.member.vo.LoginVO;
 import com.lishunyi.ournote.member.vo.RegisterVO;
 import com.lishunyi.ournote.security.util.JwtUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 李顺仪
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping("/auth")
+@Api(tags = "用户相关--API")
 public class MemberController {
 
     @Autowired
@@ -33,6 +33,7 @@ public class MemberController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
+    @ApiOperation(value = "登录API")
     public String login(@RequestBody LoginVO loginVO) {
         System.out.println(1);
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginVO.getUsernameOrEmailOrPhone(), loginVO.getPassword()));
@@ -42,7 +43,14 @@ public class MemberController {
     }
 
     @PostMapping("/register")
+    @ApiOperation(value = "注册API")
     public Boolean register(@RequestBody RegisterVO registerVO) {
         return memberService.register(registerVO);
+    }
+
+    @GetMapping("/test")
+    @ApiOperation(value = "测试")
+    public String test() {
+        return "123";
     }
 }
