@@ -37,6 +37,11 @@ spring:
 server:
   port: 8080
 
+jwt:
+  config:
+    key: lishunyi
+    ttl: 600000
+    remember: 604800000
 ignore:
   url:
     post:

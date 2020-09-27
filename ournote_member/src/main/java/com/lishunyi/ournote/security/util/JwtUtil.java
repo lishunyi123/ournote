@@ -115,20 +115,27 @@ public class JwtUtil {
                     authorization = cookie.getValue();
                 }
             }
-            // 没有就从头部获取
-            if (StrUtil.isEmpty(authorization)) {
-                authorization = request.getHeader("Authorization");
-                if (StrUtil.isEmpty(authorization)) {
-                    // 没有就从参数获取
-                    authorization = request.getParameter("Authorization");
-                }
-            }
+
 
             if (StrUtil.isNotEmpty(authorization)) {
                 return authorization.substring(7);
             }
         } catch (Exception e) {
-            // 获取jwt失败
+            try {
+                // 没有就从头部获取
+                if (StrUtil.isEmpty(authorization)) {
+                    authorization = request.getHeader("Authorization");
+                    if (StrUtil.isEmpty(authorization)) {
+                        // 没有就从参数获取
+                        authorization = request.getParameter("Authorization");
+                    }
+                }
+                if (StrUtil.isNotEmpty(authorization)) {
+                    return authorization.substring(7);
+                }
+            } catch (Exception e1) {
+
+            }
         }
         return null;
     }

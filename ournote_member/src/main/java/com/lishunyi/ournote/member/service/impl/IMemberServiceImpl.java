@@ -32,7 +32,7 @@ public class IMemberServiceImpl implements IMemberService {
         }
 
         Member member = BeanUtil.copyProperties(registerVO, Member.class);
-        member.setId(1L);
+        member.setId(idConfig.snowflake().nextId());
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         memberRepository.save(member);
         return true;
