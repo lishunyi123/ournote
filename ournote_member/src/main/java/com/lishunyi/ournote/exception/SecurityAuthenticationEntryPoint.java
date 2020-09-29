@@ -21,6 +21,6 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        System.out.println("认证异常自处理");
+        System.out.println("认证异常自处理：" + request.getRequestURI());
     }
 }

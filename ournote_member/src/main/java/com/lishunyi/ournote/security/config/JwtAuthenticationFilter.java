@@ -60,9 +60,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             } catch (SecurityException e) {
 
             }
-        } else {
-
         }
+        filterChain.doFilter(request, response);
     }
 
     private boolean checkIgnores(HttpServletRequest request) {

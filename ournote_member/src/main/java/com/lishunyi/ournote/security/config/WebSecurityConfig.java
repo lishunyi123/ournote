@@ -3,6 +3,7 @@ package com.lishunyi.ournote.security.config;
 import com.lishunyi.ournote.exception.SecurityAccessDeniedHandler;
 import com.lishunyi.ournote.exception.SecurityAuthenticationEntryPoint;
 import com.lishunyi.ournote.member.service.MemberDetailsService;
+import com.lishunyi.ournote.security.handler.TokenAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityAuthenticationEntryPoint securityAuthenticationEntryPoint;
 
     @Autowired
+    private TokenAuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Autowired
@@ -69,13 +73,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().disable()
-                .httpBasic().disable()
+                .formLogin().successHandler(authenticationSuccessHandler).and()
                 .authorizeRequests()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .logout().disable()
                 // 自定义异常处理
                 .exceptionHandling().accessDeniedHandler(securityAccessDeniedHandler).authenticationEntryPoint(securityAuthenticationEntryPoint);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

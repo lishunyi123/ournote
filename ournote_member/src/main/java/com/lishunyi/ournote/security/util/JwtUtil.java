@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class JwtUtil {
 
+    private static final String AUTHENTICATION_PREFIX = "Bearer ";
+
     @Autowired
     private JwtConfig jwtConfig;
 
@@ -49,7 +51,7 @@ public class JwtUtil {
             builder.setExpiration(DateUtil.offsetMillisecond(now, ttl.intValue()));
         }
 
-        String jwt = builder.compact();
+        String jwt = AUTHENTICATION_PREFIX + builder.compact();
         stringRedisTemplate.opsForValue().set("jwt:" + subject, jwt, ttl, TimeUnit.MILLISECONDS);
         return jwt;
     }
