@@ -86,7 +86,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         WebSecurity and = web.ignoring().and();
-
+        and.ignoring().antMatchers("/swagger-resources/**")
+                .antMatchers("/v2/**")
+                .antMatchers("/doc.html")
+                .antMatchers("/webjars/**")
+                .antMatchers("classpath*:/META-INF/resources/")
+                .antMatchers("classpath*:/META-INF/resources/webjars/");
         ignoreConfig.getGet().forEach(url -> and.ignoring().antMatchers(HttpMethod.GET, url));
         ignoreConfig.getPost().forEach(url -> and.ignoring().antMatchers(HttpMethod.POST, url));
         ignoreConfig.getDelete().forEach(url -> and.ignoring().antMatchers(HttpMethod.DELETE, url));

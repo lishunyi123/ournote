@@ -28,7 +28,7 @@ public class SwaggerConfiguration {
                 .apiInfo(apiInfo())
                 .select()
                 //这里指定Controller扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("com.lishunyi.ournote.**"))
+                .apis(RequestHandlerSelectors.basePackage("com.lishunyi.ournote.member.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -37,7 +37,7 @@ public class SwaggerConfiguration {
         return new ApiInfoBuilder()
                 .title("个人收藏图书馆 APIs")
                 .description("图书馆接口文档地址")
-                .termsOfServiceUrl("http://www.xx.com/")
+                .termsOfServiceUrl("localhost:8080/")
                 .contact(new Contact("李顺仪", "www.lishunyi.com", "lishunyi0109@gmail.com"))
                 .version("1.0")
                 .build();
