@@ -91,7 +91,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/doc.html")
                 .antMatchers("/webjars/**")
                 .antMatchers("classpath*:/META-INF/resources/")
-                .antMatchers("classpath*:/META-INF/resources/webjars/");
+                .antMatchers("classpath*:/META-INF/resources/webjars/")
+                .antMatchers("/favicon.ico");
         ignoreConfig.getGet().forEach(url -> and.ignoring().antMatchers(HttpMethod.GET, url));
         ignoreConfig.getPost().forEach(url -> and.ignoring().antMatchers(HttpMethod.POST, url));
         ignoreConfig.getDelete().forEach(url -> and.ignoring().antMatchers(HttpMethod.DELETE, url));

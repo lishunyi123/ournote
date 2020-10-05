@@ -52,3 +52,4 @@ ignore:
       - /auth/login
       - /auth/register
     get:
+      - /auth/test

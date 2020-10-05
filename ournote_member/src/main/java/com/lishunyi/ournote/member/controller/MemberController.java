@@ -1,5 +1,6 @@
 package com.lishunyi.ournote.member.controller;
 
+import com.lishunyi.base.annotation.LsyRestController;
 import com.lishunyi.base.http.Response;
 import com.lishunyi.ournote.member.service.IMemberService;
 import com.lishunyi.ournote.member.vo.RegisterVO;
@@ -15,7 +16,7 @@ import javax.validation.Valid;
  * @version 1.0
  * @since 2020/9/18 16:53
  **/
-@RestController
+@LsyRestController
 @RequestMapping("/auth")
 @Api(tags = "用户相关--API")
 public class MemberController {
@@ -25,13 +26,13 @@ public class MemberController {
 
     @PostMapping("/register")
     @ApiOperation(value = "注册API")
-    public Response<Boolean> register(@RequestBody @Valid RegisterVO registerVO) {
-        return Response.success(memberService.register(registerVO));
+    public Boolean register(@RequestBody @Valid RegisterVO registerVO) {
+        return memberService.register(registerVO);
     }
 
     @GetMapping("/test")
     @ApiOperation(value = "测试")
-    public Response<String> test() {
-        return Response.success("123");
+    public String test() {
+        return null;
     }
 }
