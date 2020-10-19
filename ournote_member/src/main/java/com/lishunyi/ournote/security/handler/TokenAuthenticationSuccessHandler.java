@@ -1,6 +1,7 @@
 package com.lishunyi.ournote.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lishunyi.base.http.Response;
 import com.lishunyi.ournote.security.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -37,12 +38,13 @@ public class TokenAuthenticationSuccessHandler implements AuthenticationSuccessH
         if (response.isCommitted()) {
             return;
         }
-        String jwt = jwtUtil.createJWT(authentication, false);
+        Boolean rememberMe = Boolean.valueOf(request.getParameter("rememberMe"));
+        String jwt = jwtUtil.createJWT(authentication, rememberMe);
         response.setStatus(HttpServletResponse.SC_OK);
         response.setCharacterEncoding("utf-8");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         ObjectMapper objectMapper = new ObjectMapper();
-        String resBody = objectMapper.writeValueAsString(jwt);
+        String resBody = objectMapper.writeValueAsString(Response.success(jwt));
         PrintWriter printWriter = response.getWriter();
         printWriter.print(resBody);
         printWriter.flush();
